@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<org.eventb.core.machineFile org.eventb.core.comment="machine" org.eventb.core.configuration="org.eventb.core.fwd" version="5">
+    <org.eventb.core.seesContext name="'" org.eventb.core.target="context"/>
+    <org.eventb.core.variable name="(" org.eventb.core.identifier="authorized"/>
+    <org.eventb.core.variable name=")" org.eventb.core.comment="the authorized client of the atm" org.eventb.core.identifier="atm_user"/>
+    <org.eventb.core.variable name="*" org.eventb.core.comment="accounts that the atm_user can access" org.eventb.core.identifier="clients2accounts"/>
+    <org.eventb.core.variable name="+" org.eventb.core.identifier="balance"/>
+    <org.eventb.core.variable name="," org.eventb.core.comment="accounts that the atm_user can access" org.eventb.core.identifier="access"/>
+    <org.eventb.core.variable name="-" org.eventb.core.identifier="authenticated"/>
+    <org.eventb.core.invariant name="0" org.eventb.core.label="inv1" org.eventb.core.predicate="clients2accounts ∈ Clients ↔ Accounts"/>
+    <org.eventb.core.invariant name="1" org.eventb.core.label="inv2" org.eventb.core.predicate="authorized ∈ BOOL"/>
+    <org.eventb.core.invariant name="2" org.eventb.core.label="inv3" org.eventb.core.predicate="atm_user ∈ Clients "/>
+    <org.eventb.core.invariant name="3" org.eventb.core.label="inv4" org.eventb.core.predicate="access ⊆ Accounts"/>
+    <org.eventb.core.invariant name="4" org.eventb.core.label="inv5" org.eventb.core.predicate="authorized = FALSE ⇒ access = ∅ "/>
+    <org.eventb.core.invariant name="5" org.eventb.core.label="inv6" org.eventb.core.predicate="authorized = TRUE ⇒ access = {x · atm_user ↦ x ∈ clients2accounts ∣ x}"/>
+    <org.eventb.core.invariant name="6" org.eventb.core.label="inv7" org.eventb.core.predicate="balance ∈ Accounts → ℤ"/>
+    <org.eventb.core.invariant name="7" org.eventb.core.label="inv8" org.eventb.core.predicate="authenticated ∈ BOOL"/>
+    <org.eventb.core.invariant name="8" org.eventb.core.label="inv9" org.eventb.core.predicate="authenticated = FALSE ⇒ access = ∅ "/>
+    <org.eventb.core.invariant name="9" org.eventb.core.label="inv10" org.eventb.core.predicate="authenticated = TRUE ⇒ access = {x · atm_user ↦ x ∈ clients2accounts ∣ x}"/>
+    <org.eventb.core.event name=":" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="INITIALISATION"/>
+    <org.eventb.core.event name=";" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="Authentication">
+        <org.eventb.core.parameter name="'" org.eventb.core.identifier="Clients"/>
+        <org.eventb.core.guard name="(" org.eventb.core.label="grd1" org.eventb.core.predicate="authenticated ∈ BOOL"/>
+        <org.eventb.core.action name="*" org.eventb.core.assignment="authenticated ≔ TRUE" org.eventb.core.label="act1"/>
+    </org.eventb.core.event>
+    <org.eventb.core.event name="=" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="Transfer">
+        <org.eventb.core.parameter name="'" org.eventb.core.identifier="source, destination, amount, currency,"/>
+        <org.eventb.core.guard name="(" org.eventb.core.label="grd1" org.eventb.core.predicate="authenticated  ∧ currency ∈ balance ∧ destination ∈ accounts ∧ balance(currency) ≥ amount"/>
+        <org.eventb.core.action name=")" org.eventb.core.assignment="balance(currency) ≔ balance(currency) − amount, balance(destination) ≔ balance(destination) + amount" org.eventb.core.label="act1"/>
+    </org.eventb.core.event>
+    <org.eventb.core.event name="&gt;" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="Deposit">
+        <org.eventb.core.parameter name="'" org.eventb.core.identifier="amount, destination"/>
+        <org.eventb.core.guard name="(" org.eventb.core.label="grd1" org.eventb.core.predicate="authenticated ∧ currency ∈ balance"/>
+        <org.eventb.core.action name=")" org.eventb.core.assignment="balance(Currency) ≔ balance(Currency) + amount" org.eventb.core.label="act1"/>
+    </org.eventb.core.event>
+    <org.eventb.core.event name="?" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="Withdraw">
+        <org.eventb.core.parameter name="'" org.eventb.core.identifier="Currency, source, amount,"/>
+        <org.eventb.core.guard name="(" org.eventb.core.label="grd1" org.eventb.core.predicate="authenticated ∧ Currency ∈ balance ∧ balance(currency) ≥ amount"/>
+        <org.eventb.core.action name=")" org.eventb.core.assignment="balance(currency) ≔ balance(currency) − amount" org.eventb.core.label="act1"/>
+    </org.eventb.core.event>
+    <org.eventb.core.event name="@" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="Stop">
+        <org.eventb.core.parameter name="'" org.eventb.core.identifier="none"/>
+        <org.eventb.core.guard name="(" org.eventb.core.label="grd1" org.eventb.core.predicate="authenticated"/>
+        <org.eventb.core.action name=")" org.eventb.core.assignment="authenticated ≔ FALSE" org.eventb.core.label="act1"/>
+    </org.eventb.core.event>
+</org.eventb.core.machineFile>

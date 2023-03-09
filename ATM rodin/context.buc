@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<org.eventb.core.contextFile org.eventb.core.comment="context" org.eventb.core.configuration="org.eventb.core.fwd" version="3">
+    <org.eventb.core.carrierSet name="'" org.eventb.core.identifier="Clients"/>
+    <org.eventb.core.carrierSet name="(" org.eventb.core.identifier="Accounts"/>
+    <org.eventb.core.carrierSet name=")" org.eventb.core.identifier="AccountType"/>
+    <org.eventb.core.carrierSet name="*" org.eventb.core.identifier="Currency"/>
+    <org.eventb.core.constant name="+" org.eventb.core.identifier="Debit"/>
+    <org.eventb.core.constant name="," org.eventb.core.identifier="Credit"/>
+    <org.eventb.core.constant name="-" org.eventb.core.identifier="MaxCredit"/>
+    <org.eventb.core.axiom name="/" org.eventb.core.label="axm1" org.eventb.core.predicate="partition(AccountType, {Debit}, {Credit})"/>
+    <org.eventb.core.axiom name="0" org.eventb.core.label="axm2" org.eventb.core.predicate="MaxCredit = 1000"/>
+</org.eventb.core.contextFile>
